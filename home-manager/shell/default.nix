@@ -13,15 +13,7 @@
       PAGER = "vimp";
       MANPAGER = "nvim -c 'Man!'";
     };
-    shellAliases = {
-      cdf = "cd ~/files/";
-      cdb = "cd ~/files/books/";
-      cdc = "cd ~/files/configs/laptop-config/";
-      cdp = "cd ~/files/projects/";
-      cds = "cd ~/files/school/";
-      cdt = "cd ~/files/temp/";
-      cdv = "cd ~/files/obsidian/";
-    };
+    shellAliases = { cdf = "cd ~/files/"; };
     initExtra = builtins.readFile ./zshrc.zsh;
     plugins = [
       {
