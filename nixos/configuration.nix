@@ -24,7 +24,9 @@
       andreaw = {
         initialPassword = "setyourpassword";
         isNormalUser = true;
-        openssh.authorizedKeys.keys = [ ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVhGkZNNklfz7zEZJmgbCtwhK4Pl1jL0+b3aeDa7e/n andreaw@nixos-mbp"
+        ];
         extraGroups = [
           "wheel"
           "video"
