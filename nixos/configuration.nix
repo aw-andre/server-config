@@ -9,10 +9,21 @@
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
-  networking.hostName = "personal-instance";
-  networking.domain = "";
+  networking = {
+    hostName = "personal-instance";
+    domain = "";
+    firewall.allowedTCPPorts = [ 80 443 ];
+  };
   services = {
     openssh.enable = true;
+    nginx = {
+      enable = true;
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
+      virtualHosts."clausewitzmanifest.com" = {
+        locations."/" = { proxyPass = "http://localhost:8000"; };
+      };
+    };
     postgresql = {
       enable = true;
       ensureUsers = [{
