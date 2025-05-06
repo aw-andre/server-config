@@ -11,7 +11,21 @@
   zramSwap.enable = true;
   networking.hostName = "personal-instance";
   networking.domain = "";
-  services.openssh.enable = true;
+  services = {
+    openssh.enable = true;
+    postgresql = {
+      enable = true;
+      ensureUsers = [{
+        name = "andreaw";
+        ensureClauses = {
+          superuser = true;
+          createrole = true;
+          createdb = true;
+        };
+      }];
+      ensureDatabases = [ "clausewitzmanifest" ];
+    };
+  };
   programs.zsh.enable = true;
   environment.etc."inputrc".text = ''
     set editing-mode vi
