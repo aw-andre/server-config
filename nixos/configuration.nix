@@ -13,6 +13,56 @@
     hostName = "personal-instance";
     domain = "";
     firewall.allowedTCPPorts = [ 80 443 ];
+    nftables = {
+      enable = true;
+      ruleset = ''
+        table inet filter {
+          chain input {
+            type filter hook input priority 0;
+
+            # Accept loopback and established connections
+            iif "lo" accept
+            ct state established,related accept
+
+            # Allow SSH
+            tcp dport 22 accept
+
+            # Allow Cloudflare IPv4 ranges
+            ip saddr {
+              103.21.244.0/22,
+              103.22.200.0/22,
+              103.31.4.0/22,
+              104.16.0.0/13,
+              104.24.0.0/14,
+              108.162.192.0/18,
+              131.0.72.0/22,
+              141.101.64.0/18,
+              162.158.0.0/15,
+              172.64.0.0/13,
+              173.245.48.0/20,
+              188.114.96.0/20,
+              190.93.240.0/20,
+              197.234.240.0/22,
+              198.41.128.0/17
+            } tcp dport { 80, 443 } accept
+
+            # Allow Cloudflare IPv6 ranges
+            ip6 saddr {
+              2400:cb00::/32,
+              2606:4700::/32,
+              2803:f800::/32,
+              2405:b500::/32,
+              2405:8100::/32,
+              2a06:98c0::/29,
+              2c0f:f248::/32
+            } tcp dport { 80, 443 } accept
+
+            # Drop everything else
+            reject with icmp type port-unreachable
+          }
+        }
+      '';
+    };
   };
   services = {
     openssh.enable = true;
@@ -48,7 +98,7 @@
         initialPassword = "setyourpassword";
         isNormalUser = true;
         openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVhGkZNNklfz7zEZJmgbCtwhK4Pl1jL0+b3aeDa7e/n andreaw@nixos-mbp"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMKUBuOXx8Hua5NxcHmNWe3R4u26GWe5fkvFw65/79BE andreaw@nixos-mbp"
         ];
         extraGroups = [
           "wheel"
@@ -62,8 +112,7 @@
         ];
       };
       root.openssh.authorizedKeys.keys = [
-        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC78cjsLL8hQ7Mhwdw79jLcv1MPIjlE2gtYElev+PpWbh06risKWhWAQNbkoopnaAR6u1vxx75bv0kYr34iwr3G+sOL5SnDBjumbp7PQLkIkD/P1YmCg7pF9Hk5gVCOdY4B3D0MuatVbtmOKSQC+xTN0U9NUgUoFTfC69FC5FxjYBQSa651PCAsqHtsZSdVypy6htFYZReBvgTri1I+8wYQ6n3fWjHoGGfmPNUojLINu2r0igVMkq/29JzeH1FZI+Tk4QHTvHeVLU7TxJUgjo1cMrKZK4q+20ViIxnqRLdb5cOszPq310Qy5aaa5sNRQvGaltjwCcsixa8VCRJ7MNk5 ssh-key-2025-05-04"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMeFQNMERqkSRsD7Dw7OPEt7m/L9I035J/v8yY9+/ZLD andreaw@nixos-mbp"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE3vC8Vi0A0xPxXhffr21Fv8UVhdSSr3TS92tP9z4act andreaw@nixos-mbp"
       ];
     };
   };
