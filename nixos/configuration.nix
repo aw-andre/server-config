@@ -34,7 +34,7 @@
           createdb = true;
         };
       }];
-      ensureDatabases = [ "clausewitzmanifest" ];
+      ensureDatabases = [ "andreaw" "clausewitzmanifest" ];
     };
   };
   programs.zsh.enable = true;
