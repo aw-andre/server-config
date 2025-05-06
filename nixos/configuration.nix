@@ -18,10 +18,8 @@
     openssh.enable = true;
     nginx = {
       enable = true;
-      recommendedProxySettings = true;
-      recommendedTlsSettings = true;
       virtualHosts."clausewitzmanifest.com" = {
-        locations."/" = { proxyPass = "http://localhost:8000"; };
+        locations."/" = { proxyPass = "http://127.0.0.1:8000"; };
       };
     };
     postgresql = {
