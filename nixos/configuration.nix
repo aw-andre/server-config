@@ -64,6 +64,22 @@
       '';
     };
   };
+
+  systemd.services.myserver = {
+    description = "Clausewitz Manifest";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+
+    serviceConfig = {
+      ExecStart = "/home/andreaw/files/clausewitz-manifest/bin";
+      WorkingDirectory = "/home/andreaw/files/clausewitz-manifest";
+      Restart = "always";
+      User = "andreaw";
+
+      ProtectHome = false;
+    };
+  };
+
   services = {
     openssh.enable = true;
     nginx = {
